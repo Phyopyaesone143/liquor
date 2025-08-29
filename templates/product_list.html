@@ -1,0 +1,75 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+{% block title %}
+Productlist
+{% endblock %}
+
+{% block body %}
+
+{% if user.is_staff %}
+<div class="flex" style="margin-left: 1000px;">
+    <p class="mt-4 text-secondary"><span class="text-success">Do you wanna sell your products?</span><a
+            href="/products/create/" class="btn btn-info text-primary" style="margin-left: 6px;">Add your product</a></p>
+</div>
+{% endif %}
+
+{% for product in products %}
+
+<div class="card mt-4 img-thumbnail" style="width: 18rem;">
+
+    {% if product.product_image %}
+<div class="container" style="width: 100%; height: 9rem; overflow: hidden;">
+    <img src="{{product.product_image.url}}" class="rounded-3 col-sm-6 mx-auto"
+        style="width: 100%;height: 100%; object-fit: cover;">
+</div>
+{% endif %}
+
+    <div class="card-body">
+        <h5 class="card-title">{{product.productname}}</h5>
+        <p class="card-text">{{product.shop.shopname}}</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{product.price}}</li>
+        <li class="list-group-item">{{product.quantity}}</li>
+        <li class="list-group-item">{{product.description}}</li>
+       
+    </ul>
+    <div class="card-body">
+        <!-- <a href="/products/" class="card-link">Buy Now!</a> -->
+
+        <a class="nav-link active glyphicon glyphicon-shopping-cart" href="/products/{{product.id}}" data-bs-toggle="modal" data-bs-target="#myModal2"
+        type="button" style="margin-left: 2rem; font-size: 20px;" ></a>
+    </div>
+</div>
+
+
+
+<!-- The Modal -->
+<div class="modal" id="myModal2">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Add to Cart</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form action="">
+      <!-- Modal body -->
+      <div class="modal-body">
+       <p>{{product.productname}}</p>
+       <input type="number" name="{{cart.quantity}}" placeholder="1">
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,240 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+{% block title %}
+Shoplist
+{% endblock %}
+
+{% block body %}
+
+<head>
+    <style>
+    :root { --max: 900px; }
+    html,body { margin:0; padding:0; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.6; color:#111; }
+    .wrap { max-width: var(--max); margin: 32px auto; padding: 0 16px 64px; }
+    header h1 { margin:0 0 4px; font-size: 28px; }
+    header .meta { color:#555; font-size: 14px; margin-bottom: 24px; }
+    .notice { background:#f6f6f6; border:1px solid #e6e6e6; padding:12px 14px; border-radius:8px; font-size:14px; }
+    nav.toc { margin: 20px 0 28px; padding: 16px; border:1px solid #eee; border-radius:8px; background:#fcfcfc; }
+    nav.toc ol { margin:0; padding-left: 18px; }
+    section { margin: 28px 0; }
+    h2 { font-size: 20px; margin: 18px 0 8px; margin-left: 1rem; }
+    h3 { font-size: 16px; margin: 14px 0 6px; margin-left: 1rem; }
+    p{margin-left: 1.5rem;}
+    p,li { font-size: 15px; }
+    section li{ margin-left: 1.5rem;}
+    ul,ol { padding-left: 20px; }
+    a { color:#0a58ca; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    footer { margin-top: 40px; font-size: 14px; color:#555; border-top:1px solid #eee; padding-top:16px; }
+    .muted { color:#666; }
+    .tag { display:inline-block; font-size:12px; border:1px solid #ddd; padding:2px 8px; border-radius:999px; margin-right:6px; background:#fafafa }
+    @media print {
+      nav.toc { page-break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+      .wrap { padding-bottom: 0; }
+      .notice { border:1px solid #000; }
+    }
+  </style>
+</head>
+
+    <nav class="toc">
+      <strong>Contents</strong>
+      <ol>
+        <li><a href="#acceptance">Acceptance of Terms</a></li>
+        <li><a href="#eligibility">Eligibility & Age Verification</a></li>
+        <li><a href="#account">Account & Security</a></li>
+        <li><a href="#ordering">Ordering, Acceptance & Seller of Record</a></li>
+        <li><a href="#pricing">Pricing, Taxes & Fees</a></li>
+        <li><a href="#delivery">Delivery & Pickup</a></li>
+        <li><a href="#substitutions">Substitutions & Availability</a></li>
+        <li><a href="#returns">Returns, Refunds & Cancellations</a></li>
+        <li><a href="#prohibited">Prohibited Conduct</a></li>
+        <li><a href="#ip">Intellectual Property</a></li>
+        <li><a href="#thirdparty">Third-Party Services</a></li>
+        <li><a href="#responsible">Responsible Consumption</a></li>
+        <li><a href="#disclaimer">Disclaimer of Warranties</a></li>
+        <li><a href="#limitation">Limitation of Liability</a></li>
+        <li><a href="#indemnity">Indemnification</a></li>
+        <li><a href="#termination">Suspension & Termination</a></li>
+        <li><a href="#geolaw">Geolocation & Legal Compliance</a></li>
+        <li><a href="#comms">Communications & Marketing</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#changes">Changes to the Service or Terms</a></li>
+        <li><a href="#governing">Governing Law & Dispute Resolution</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#addons">Add-on Clauses (optional)</a></li>
+      </ol>
+    </nav>
+
+   
+      <section id="acceptance">
+        <h2>1) Acceptance of Terms</h2>
+        <p>By creating an account, placing an order, or otherwise using the Service, you agree to these Terms and our
+          <a href="{{ privacy_url|default:'#' }}">Privacy Policy</a>. If you do not agree, do not use the Service.</p>
+      </section>
+
+      <section id="eligibility">
+        <h2>2) Eligibility & Age Verification</h2>
+        <ul>
+          <li>You must be of the minimum legal drinking age in your jurisdiction and legally permitted to purchase alcohol.</li>
+          <li>We may require government-issued photo ID at checkout, pickup, or delivery. We or our delivery partners may decline service if ID is invalid, cannot be verified, or you appear intoxicated.</li>
+          <li>No straw purchases (ordering for minors or restricted persons).</li>
+        </ul>
+      </section>
+
+      <section id="account">
+        <h2>3) Account & Security</h2>
+        <ul>
+          <li>Provide accurate information and keep your credentials secure.</li>
+          <li>You are responsible for all activity under your account; notify us immediately of unauthorized use.</li>
+        </ul>
+      </section>
+
+      <section id="ordering">
+        <h2>4) Ordering, Acceptance & Seller of Record</h2>
+        <p>When you place an order, you make an offer to buy. We may accept or reject at our discretion (e.g., stock limits, legal restrictions).</p>
+        <ul>
+          <li><strong>Marketplace model:</strong> {{ company_name|default:"[Company Name]" }} operates a platform connecting you with independent retailers; the retailer is the <em>seller of record</em> for alcoholic beverages.</li>
+          <li><strong>Single-store model:</strong> {{ company_name|default:"[Company Name]" }} is the <em>seller of record</em>.</li>
+        </ul>
+      </section>
+
+      <section id="pricing">
+        <h2>5) Pricing, Taxes & Fees</h2>
+        <p>Prices, taxes, deposits (e.g., bottle deposits), and service/delivery fees are shown at checkout and may change without notice until we accept your order. Promotions may be subject to additional terms and may be withdrawn at any time.</p>
+      </section>
+
+      <section id="delivery">
+        <h2>6) Delivery & Pickup</h2>
+        <ul>
+          <li><strong>Age check required:</strong> A recipient of legal drinking age with valid ID must be present.</li>
+          <li>Couriers may refuse delivery if (a) no valid ID; (b) recipient appears intoxicated; (c) the address is a restricted/dry location; or (d) delivery would violate local law (e.g., time-of-day restrictions).</li>
+          <li>If delivery is refused or missed, fees may still apply; we may charge a restocking or redelivery fee.</li>
+          <li>For pickup, bring the order confirmation and valid ID. Only the named customer (or an authorized adult) may pick up.</li>
+        </ul>
+      </section>
+
+      <section id="substitutions">
+        <h2>7) Substitutions & Availability</h2>
+        <p>If an item is unavailable, you may allow substitutions or request no substitutions. If you allow substitutions, we may replace with similar products/prices where permitted.</p>
+      </section>
+
+      <section id="returns">
+        <h2>8) Returns, Refunds & Cancellations</h2>
+        <ul>
+          <li>Alcohol returns are often restricted by law. We generally cannot accept returns of opened products unless defective, damaged, or otherwise required by law.</li>
+          <li>Requests for cancellation or refund must comply with local regulations and our store policy.</li>
+          <li>Chargeback or dispute abuse may result in account suspension.</li>
+        </ul>
+      </section>
+
+      <section id="prohibited">
+        <h2>9) Prohibited Conduct</h2>
+        <p>You agree not to:</p>
+        <ul>
+          <li>Use the Service for unlawful purposes or to supply alcohol to minors;</li>
+          <li>Use false identity, invalid payment methods, or attempt to bypass age checks;</li>
+          <li>Interfere with the Service, scrape, reverse engineer, or misuse our intellectual property.</li>
+        </ul>
+      </section>
+
+      <section id="ip">
+        <h2>10) Intellectual Property</h2>
+        <p>All content, trademarks, and software in the Service are owned by {{ company_name|default:"[Company Name]" }} or its licensors. We grant you a limited, non-exclusive, revocable license to use the Service for personal, lawful purposes.</p>
+      </section>
+
+      <section id="thirdparty">
+        <h2>11) Third-Party Services</h2>
+        <p>We may use third-party payment processors, ID verification providers, and couriers. Their services are subject to their own terms and privacy policies.</p>
+      </section>
+
+      <section id="responsible">
+        <h2>12) Responsible Consumption</h2>
+        <p>Please drink responsibly. Do not drink and drive. If pregnant or with medical conditions, seek medical advice. We are not liable for misuse of alcoholic products.</p>
+      </section>
+
+      <section id="disclaimer">
+        <h2>13) Disclaimer of Warranties</h2>
+        <p>The Service is provided “as is” and “as available” without warranties of any kind except as required by law. Product descriptions and images are for convenience and may vary slightly.</p>
+      </section>
+
+      <section id="limitation">
+        <h2>14) Limitation of Liability</h2>
+        <p>To the maximum extent permitted by law, {{ company_name|default:"[Company Name]" }} and its affiliates are not liable for indirect, incidental, special, consequential, or punitive damages, or any loss of profits/revenue/data arising from or related to your use of the Service.</p>
+      </section>
+
+      <section id="indemnity">
+        <h2>15) Indemnification</h2>
+        <p>You agree to indemnify and hold harmless {{ company_name|default:"[Company Name]" }}, its affiliates, and personnel from claims and expenses (including reasonable legal fees) arising out of your breach of these Terms or misuse of the Service.</p>
+      </section>
+
+      <section id="termination">
+        <h2>16) Suspension & Termination</h2>
+        <p>We may suspend or terminate access for any breach, suspected fraud, legal violation, or risk to others. You may stop using the Service at any time.</p>
+      </section>
+
+      <section id="geolaw">
+        <h2>17) Geolocation & Legal Compliance</h2>
+        <p>We may restrict orders based on geolocation, store hours, delivery windows, dry zones, or other legal requirements. You are responsible for complying with local laws.</p>
+      </section>
+
+      <section id="comms">
+        <h2>18) Communications & Marketing</h2>
+        <p>By using the Service, you may receive transactional emails/SMS (order updates, verification codes). Marketing communications require your consent; you can opt out at any time.</p>
+      </section>
+
+      <section id="privacy">
+        <h2>19) Privacy</h2>
+        <p>Our collection and use of personal data—including ID verification data—are described in our <a href="{{ privacy_url|default:'#' }}">Privacy Policy</a>, which is incorporated into these Terms.</p>
+      </section>
+
+      <section id="changes">
+        <h2>20) Changes to the Service or Terms</h2>
+        <p>We may update the Service or these Terms at any time. Material changes will be notified by posting the updated Terms and revising the “Last updated” date. Continued use means you accept the changes.</p>
+      </section>
+
+      <section id="governing">
+        <h2>21) Governing Law & Dispute Resolution</h2>
+        <p>These Terms are governed by the laws of <strong>{{ jurisdiction|default:"[Jurisdiction]" }}</strong>, without regard to conflict of law principles.</p>
+        <h3>Option A — Courts</h3>
+        <p>Disputes will be resolved in the courts of <strong>{{ court_city|default:"[City, Country]" }}</strong>.</p>
+        <h3>Option B — Arbitration</h3>
+        <p>Any dispute shall be finally resolved by <strong>{{ arbitration_body|default:"[arbitration body/rules]" }}</strong> in <strong>{{ arbitration_city|default:"[City]" }}</strong>, conducted in <strong>{{ arbitration_language|default:"[language]" }}</strong>.</p>
+        <p class="muted">Consumer-mandatory rights in your country still apply.</p>
+      </section>
+
+      <section id="contact">
+        <h2>22) Contact</h2>
+        <p>
+          {{ company_name|default:"[Company Name]" }}<br>
+          {{ company_address|default:"[Address]" }}<br>
+          Email: <a href="mailto:{{ company_email|default:'[email@example.com]' }}">{{ company_email|default:"[email@example.com]" }}</a> •
+          Phone: {{ company_phone|default:"[+Country Code xxx xxx]" }}<br>
+          Business Registration / License No.: {{ license_no|default:"[if applicable]" }}
+        </p>
+      </section>
+
+      <section id="addons">
+        <h2>Add-on Clauses (Optional)</h2>
+        <h3>A. ID Scan & Data Retention</h3>
+        <p>We may scan or record ID details solely to verify age and prevent fraud. We retain such data only as long as permitted by law and our Privacy Policy.</p>
+        <h3>B. Delivery to Building Concierge/Reception</h3>
+        <p>Delivery to concierge/reception is allowed only where age verification is performed by our courier with the recipient present.</p>
+        <h3>C. No-Contact Delivery</h3>
+        <p>For alcohol orders, no-contact delivery is not available due to age-verification laws.</p>
+        <h3>D. Dry Areas & Time Windows</h3>
+        <p>Orders may be blocked or cancelled if your address is in a dry area or if local regulations prohibit alcohol sales at the requested time.</p>
+      </section>
+  
+
+    <footer>
+      <div>© {{ current_year|default:"[YYYY]" }} {{ company_name|default:"[Company Name]" }}. All rights reserved.</div>
+      <div class="muted">This template is for general use and does not constitute legal advice.</div>
+    </footer>
+  </div>
+
+
+
+{% endblock %}

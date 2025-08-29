@@ -1,0 +1,119 @@
+<div style="display: flex; align-items: center; ">
+  <img class="" src="../../static/img/bottles.png" alt="logo"
+    style="width: 4rem; height: 100%; margin-top: 1rem; margin-left: 1rem;">
+  <h3 style="font-family: 'Brush Script MT', cursive; font-size: 5rem; margin-left: 1rem ;"> <span
+      style="color: #fc641c;">Hey </span>Bro</h3>
+</div>
+<ul class="nav justify-content-center" style="margin-top: -4rem;">
+
+  <!-- <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">Active</a>
+  </li> -->
+  <li class="nav-item">
+    <a class="nav-link" href="/">
+      <h4>Home</h4>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/shops/list/">
+      <h4>Stores</h4>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/products/list/">
+      <h4>Liquors</h4>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/about/">
+      <h4>About</h4>
+    </a>
+  </li>
+  
+  <!-- <div class="dropdown">
+    <i class="nav-link active glyphicon glyphicon-shopping-cart" type="button" style="margin-left: 2rem; font-size: 20px;" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <li><a class="dropdown-item" href="/"><h4>Home</h4></a></li>
+    <li><a class="dropdown-item" href="/shops/list/"><h4>Stores</h4></a></li>
+    <li><a class="dropdown-item" href="/products/list/"><h4>liquors</h4></a></li>
+    <li><a href="/shoppingcart/">Check in</a></li>
+  </ul>
+  </div> -->
+
+
+
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+      aria-expanded="false">
+      <h4>Menu</h4>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+      <li><a class="dropdown-item" href="/">
+          <h4>Home</h4>
+        </a></li>
+      <li><a class="dropdown-item" href="/shops/list/">
+          <h4>Stores</h4>
+        </a></li>
+      <li><a class="dropdown-item" href="/products/list/">
+          <h4>liquors</h4>
+        </a></li>
+
+    </ul>
+  </div>
+
+<div style="display: flex;  margin-left: 280px;">
+    <li class="nav-item">
+      <i class="nav-link active glyphicon glyphicon-shopping-cart" data-bs-toggle="modal" data-bs-target="#myModal"
+        type="button" style="margin-left: 2rem; font-size: 20px;" ></i>
+    </li>
+ 
+
+  <li class="nav-item " style="margin-left:10px;">
+    {% if request.user.is_authenticated %}
+    
+    <a class="nav-link active btn btn-secondary" aria-current="page" href="/logout/">
+      
+      {% if now|date:'A' == 'AM' %}
+        <h6>Good Morning</h6>
+        {% endif %}
+        {% if now|date:'A' == 'PM' %}
+        <h6>Good Evening</h6>
+        {% endif %}
+
+      <h4 style="color: green;">{{user.username}}</h4>
+    </a>
+    {% else %}
+    <a class="nav-link active" aria-current="page" href="/login/">Login</a>
+    {% endif %}
+  </li>
+</div>
+
+</ul>
+
+
+
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Modal Heading</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        Modal body..
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
