@@ -1,0 +1,159 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+{% block title %}Terms & Conditions{% endblock %}
+
+{% block body %}
+<style>
+  .hero {
+    background: linear-gradient(120deg, rgba(13,110,253,.1), rgba(25,135,84,.1));
+    border-bottom: 1px solid rgba(0,0,0,.05);
+  }
+  .section-card {
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .anchor-offset {
+    scroll-margin-top: 80px; /* for fixed nav offset */
+  }
+</style>
+
+<!-- Hero Header -->
+<section class="hero py-5">
+  <div class="container text-center">
+    <h1 class="display-5 fw-bold">Terms & Conditions</h1>
+    <p class="lead">Understand your rights, responsibilities, and our policies before using our liquor platform.</p>
+    <p class="text-muted small">Last Updated: {{ now|date:"F d, Y" }}</p>
+  </div>
+</section>
+
+<!-- Main Content -->
+<div class="container py-5">
+  <div class="row">
+    <!-- Sidebar -->
+    <aside class="col-lg-3 mb-4">
+      <div class="card shadow-sm section-card">
+        <div class="card-body">
+          <h6 class="fw-bold text-uppercase small mb-3">Quick Links</h6>
+          <ul class="list-unstyled">
+            <li><a href="#acceptance" class="text-decoration-none">1. Acceptance</a></li>
+            <li><a href="#eligibility" class="text-decoration-none">2. Eligibility</a></li>
+            <li><a href="#accounts" class="text-decoration-none">3. Accounts</a></li>
+            <li><a href="#orders" class="text-decoration-none">4. Orders & Payments</a></li>
+            <li><a href="#delivery" class="text-decoration-none">5. Delivery</a></li>
+            <li><a href="#returns" class="text-decoration-none">6. Returns</a></li>
+            <li><a href="#prohibited" class="text-decoration-none">7. Prohibited Use</a></li>
+            <li><a href="#liability" class="text-decoration-none">8. Liability</a></li>
+            <li><a href="#changes" class="text-decoration-none">9. Changes</a></li>
+            <li><a href="#contact" class="text-decoration-none">10. Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <div class="col-lg-9">
+      <!-- 1 -->
+      <div id="acceptance" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>1. Acceptance of Terms</h5>
+          <p>By accessing or using our liquor marketplace, you agree to comply with these Terms & Conditions. If you do not agree, please stop using the service immediately.</p>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div id="eligibility" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>2. Eligibility</h5>
+          <ul>
+            <li>You must be of legal drinking age in your region (18+ in Myanmar).</li>
+            <li>Government-issued ID may be required at delivery.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div id="accounts" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>3. Accounts & Security</h5>
+          <p>You are responsible for maintaining the confidentiality of your account credentials. Any unauthorized use of your account must be reported to us immediately.</p>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div id="orders" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>4. Orders & Payments</h5>
+          <p>All orders are subject to availability and confirmation. Prices are displayed in MMK and may change without prior notice.</p>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div id="delivery" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>5. Delivery</h5>
+          <ul>
+            <li>Delivery is available only in permitted areas.</li>
+            <li>An adult of legal age must be present to receive the order.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div id="returns" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>6. Returns & Refunds</h5>
+          <p>Alcoholic products cannot usually be returned. However, defective or damaged items may be eligible for replacement or refund within 48 hours.</p>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div id="prohibited" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>7. Prohibited Use</h5>
+          <p>Users must not:</p>
+          <ul>
+            <li>Purchase alcohol for or on behalf of minors.</li>
+            <li>Engage in fraudulent activities.</li>
+            <li>Resell products without authorization.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div id="liability" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>8. Limitation of Liability</h5>
+          <p>We are not liable for indirect or consequential damages caused by misuse of our products or platform, except where prohibited by law.</p>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div id="changes" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>9. Changes to Terms</h5>
+          <p>We may update these terms from time to time. Continued use of the platform means you accept the updated terms.</p>
+        </div>
+      </div>
+
+      <!-- 10 -->
+      <div id="contact" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>10. Contact</h5>
+          <p>If you have any questions about these Terms & Conditions, please contact us:</p>
+          <ul>
+            <li>Email: support@liquorapp.com</li>
+            <li>Phone: +95 9 123 456 789</li>
+            <li>Address: Downtown Yangon, Myanmar</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text-end small text-muted">
+        © {{ now|date:"Y" }} Liquor App. Please drink responsibly.
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

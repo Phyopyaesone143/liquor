@@ -1,0 +1,146 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+{% block title %}Privacy Policy{% endblock %}
+
+{% block body %}
+<style>
+  .hero {
+    background: linear-gradient(120deg, rgba(13,110,253,.08), rgba(111,66,193,.08));
+    border-bottom: 1px solid rgba(0,0,0,.05);
+  }
+  .section-card {
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .anchor-offset {
+    scroll-margin-top: 80px; /* avoid hidden headings */
+  }
+</style>
+
+<!-- Hero Section -->
+<section class="hero py-5">
+  <div class="container text-center">
+    <h1 class="display-5 fw-bold">Privacy Policy</h1>
+    <p class="lead">Your privacy matters to us. This page explains how we collect, use, and protect your data.</p>
+    <p class="text-muted small">Effective Date: {{ now|date:"F d, Y" }}</p>
+  </div>
+</section>
+
+<!-- Main Content -->
+<div class="container py-5">
+  <div class="row">
+    <!-- Sidebar -->
+    <aside class="col-lg-3 mb-4">
+      <div class="card shadow-sm section-card">
+        <div class="card-body">
+          <h6 class="fw-bold text-uppercase small mb-3">Quick Links</h6>
+          <ul class="list-unstyled">
+            <li><a href="#info" class="text-decoration-none">1. Information We Collect</a></li>
+            <li><a href="#use" class="text-decoration-none">2. How We Use Data</a></li>
+            <li><a href="#cookies" class="text-decoration-none">3. Cookies</a></li>
+            <li><a href="#sharing" class="text-decoration-none">4. Sharing Information</a></li>
+            <li><a href="#security" class="text-decoration-none">5. Data Security</a></li>
+            <li><a href="#rights" class="text-decoration-none">6. Your Rights</a></li>
+            <li><a href="#thirdparty" class="text-decoration-none">7. Third-Party Services</a></li>
+            <li><a href="#changes" class="text-decoration-none">8. Changes</a></li>
+            <li><a href="#contact" class="text-decoration-none">9. Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <div class="col-lg-9">
+      <div id="info" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>1. Information We Collect</h5>
+          <p>We may collect personal details such as your name, email, phone number, delivery address, and age verification data when you create an account or place an order.</p>
+        </div>
+      </div>
+
+      <div id="use" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>2. How We Use Your Data</h5>
+          <p>Your information is used to:</p>
+          <ul>
+            <li>Process and deliver orders</li>
+            <li>Verify age and legal compliance</li>
+            <li>Send updates, promotions, or important notices</li>
+            <li>Improve our services and customer support</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="cookies" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>3. Cookies & Tracking</h5>
+          <p>We use cookies to personalize your shopping experience, analyze site usage, and provide relevant offers. You may disable cookies in your browser settings, but some features may not work properly.</p>
+        </div>
+      </div>
+
+      <div id="sharing" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>4. Sharing Information</h5>
+          <p>We do not sell your personal information. We only share it with:</p>
+          <ul>
+            <li>Trusted delivery partners</li>
+            <li>Payment providers</li>
+            <li>Legal authorities (if required by law)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="security" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>5. Data Security</h5>
+          <p>We use encryption and secure systems to protect your personal information. However, no online platform can guarantee 100% security.</p>
+        </div>
+      </div>
+
+      <div id="rights" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>6. Your Rights</h5>
+          <p>You have the right to:</p>
+          <ul>
+            <li>Access your personal data</li>
+            <li>Request corrections or deletion</li>
+            <li>Opt-out of marketing communications</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="thirdparty" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>7. Third-Party Services</h5>
+          <p>Our platform may include links to third-party sites or services. We are not responsible for their privacy practices or content.</p>
+        </div>
+      </div>
+
+      <div id="changes" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>8. Changes to This Policy</h5>
+          <p>We may update this Privacy Policy from time to time. Please check this page regularly for the latest version.</p>
+        </div>
+      </div>
+
+      <div id="contact" class="card section-card shadow-sm anchor-offset">
+        <div class="card-body p-4">
+          <h5>9. Contact Us</h5>
+          <p>If you have any questions regarding this Privacy Policy, please contact us:</p>
+          <ul>
+            <li>Email: privacy@liquorapp.com</li>
+            <li>Phone: +95 9 987 654 321</li>
+            <li>Address: Downtown Yangon, Myanmar</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text-end small text-muted">
+        © {{ now|date:"Y" }} Liquor App. Your privacy is our priority.
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

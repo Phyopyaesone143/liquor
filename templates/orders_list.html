@@ -1,0 +1,180 @@
+{% extends 'components/base2.html' %}
+{% block title %}
+Shoplist
+{% endblock %}
+{% load static %}
+
+{% block body %}
+
+<div class="hero-wrap">
+  <h1 class="hero-title mt-3">Order List</h1>
+</div>
+
+{% if orders_send or orders_receive %}
+<table class="table align-middle mb-0 bg-white">
+  <thead class="bg-light">
+    <tr>
+      <th>Name</th>
+      <th class="text-center">Order by</th>
+      <th class="text-center">Quantity</th>
+      <th class="text-center">Price</th>
+      <th class="text-center">Total</th>
+      <th class="text-center">Status</th>
+      <!-- <th lass="text-center">Receive</th> -->
+    </tr>
+  </thead>
+
+  {% if orders_receive %}
+  <tbody>
+
+    {% for o in orders_receive %}
+    {% if not o.purchase %}
+       <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          {% if o.cart.product.product_image %}
+          <img src="{{ o.cart.product.product_image.url }}" alt="" style="width:45px;height:45px;object-fit:cover"
+            class="rounded-circle me-2">
+          {% endif %}
+          <div>
+            <p class="fw-bold mb-0">{{ o.cart.product.productname }}</p>
+            <p class="text-muted mb-0 small">{{ o.cart.product.shop.shopname }}</p>
+          </div>
+        </div>
+      </td>
+      <td class="text-center"><a href="/account/profilecus/{{o.customer}}/">{{o.customer}}</a></td>
+      <td class="text-center">{{ o.cart.quantity }}</td>
+      <td class="text-center">{{ o.cart.product.price }}</td>
+      <td class="text-center">{{ o.cart.total }}</td>
+
+      <!-- <td>
+        {% if o.purchase %}
+          <span class="badge bg-success">Confirmed</span>
+        {% else %}
+          <span class="badge bg-warning text-dark">In progress</span>
+        {% endif %}
+      </td> -->
+      <td>
+        <form method="POST" action="/orders/{{o.id}}/sell/">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-secondary">Sell</button>
+        </form>
+
+      </td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+    <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    {% for o in orders_receive %}
+    {% if o.purchase %}
+     <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          {% if o.cart.product.product_image %}
+          <img src="{{ o.cart.product.product_image.url }}" alt="" style="width:45px;height:45px;object-fit:cover"
+            class="rounded-circle me-2">
+          {% endif %}
+          <div>
+            <p class="fw-bold mb-0">{{ o.cart.product.productname }}</p>
+            <p class="text-muted mb-0 small">{{ o.cart.product.shop.shopname }}</p>
+          </div>
+        </div>
+      </td>
+      <td class="text-center"><a href="/account/profilecus/{{o.customer}}/">{{o.customer}}</a></td>
+      <td class="text-center">{{ o.cart.quantity }}</td>
+      <td class="text-center">{{ o.cart.product.price }}</td>
+      <td class="text-center">{{ o.cart.total }}</td>
+
+      <!-- <td>
+        {% if o.purchase %}
+          <span class="badge bg-success">Confirmed</span>
+        {% else %}
+          <span class="badge bg-warning text-dark">In progress</span>
+        {% endif %}
+      </td> -->
+      <td>
+          <button type="submit" class="btn btn-success mx-auto" disabled>Confirmed</button>
+       
+      </td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+
+
+    <!-- {# optional footer total #} -->
+    <tr>
+      <td colspan="3" class="text-end fw-semibold"></td>
+      <td class="text-end fw-semibold">
+
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
+
+  {% endif %}
+
+  <!-- custlist -->
+
+  {% if orders_send %}
+  <tbody>
+    {% for o in orders_send %}
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          {% if o.cart.product.product_image %}
+          <img src="{{ o.cart.product.product_image.url }}" alt="" style="width:45px;height:45px;object-fit:cover"
+            class="rounded-circle me-2">
+          {% endif %}
+          <div>
+            <p class="fw-bold mb-0">{{ o.cart.product.productname }}</p>
+            <p class="text-muted mb-0 small">{{ o.cart.product.shop.shopname }}</p>
+          </div>
+        </div>
+      </td>
+      <td class="text-center"><a href="/account/profilecus/{{o.customer}}/">{{o.customer}}</a></td>
+      <td class="text-center">{{ o.cart.quantity }}</td>
+      <td class="text-center">{{ o.cart.product.price }}</td>
+      <td class="text-center">{{ o.cart.total }}</td>
+
+      <!-- <td>
+        {% if o.purchase %}
+          <span class="badge bg-success">Confirmed</span>
+        {% else %}
+          <span class="badge bg-warning text-dark">In progress</span>
+        {% endif %}
+      </td> -->
+      <td>
+        {% if o.purchase == True %}
+        <form method="POST" action="#">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success align-items-center" disabled>Confirmed</button>
+        </form>
+        {% else %}
+        <form method="POST" action="#">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-secondary align-items-center">Inprogress</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+
+    {# optional footer total #}
+    <tr>
+      <td colspan="3" class="text-end fw-semibold"></td>
+      <td class="text-end fw-semibold">
+        <!-- {{ send_total }} {# computed in the view below #} -->
+      </td>
+      <td></td>
+      <td></td> <td></td><td></td>
+    </tr>
+  </tbody>
+</table>
+
+
+{% endif %}
+{% else %}
+<p>Your inbox is empty.</p>
+{% endif %}
+
+{% endblock %}

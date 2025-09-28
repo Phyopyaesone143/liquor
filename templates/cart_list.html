@@ -7,5 +7,175 @@ Shoplist
 
 {% block body %}
 
+<div class="hero-wrap">
+  <h1 class="hero-title mt-3">Cart List</h1>
+</div>
+
+{% if carts %}
+
+<table class="table align-middle mb-0 bg-white">
+  <thead class="bg-light">
+    <tr>
+      <th>Name</th>
+      <th>Quantity</th>
+      <th>Price</th>
+      <th>Total</th>
+      <th>Actions</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for cart in carts %}
+    {% if cart.status == False %}
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <img
+              src="{{cart.product.product_image.url}}"
+              alt=""
+              style="width: 45px; height: 45px"
+              class="rounded-circle"
+              />
+          <div class="ms-3">
+            <p class="fw-bold mb-1">{{cart.product.productname}}</p>
+            <p class="text-muted mb-0">{{cart.shop.shopname}}</p>
+          </div>
+        </div>
+      </td>
+      <td>
+        {{cart.quantity}}
+      </td>
+      <td>{{cart.product.price}}</td>
+      <td>{{cart.total}}</td>
+      <td>
+        {% if cart.status == False %}
+          <button class="badge badge-danger rounded-pill d-inline">in progress</button>
+        {% else %}
+          <span class="badge badge-success rounded-pill d-inline">Confirmed</span>
+        {% endif %}
+      </td>
+     
+      <td>
+        <button type="button" class="btn btn-link btn-sm btn-rounded" data-bs-toggle="modal"
+              data-bs-target="#updatecart_{{ cart.id }}">
+          Edit
+        </button>
+      </td>
+
+      <td>
+        <button type="button" class="btn btn-link btn-sm btn-rounded" data-bs-toggle="modal"
+              data-bs-target="#deletecart_{{ cart.id }}">
+          Delete
+        </button>
+      </td>
+    </tr>
+    {% endif %}
+
+    <!-- Modal unique update to THIS cart -->
+  <div class="modal fade" id="updatecart_{{ cart.id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 class="modal-title">Update to Cart</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form action="/shoppingcart/update/{{cart.id}}/" method="POST">
+          {% csrf_token %}
+          <div class="modal-body">
+            <input type="hidden" name="product_id" value="{{ cart.product.id }}">
+            <input type="hidden" name="shop_id" value="{{ cart.product.shop.id }}">
+
+            <div class="mb-2">
+              <label class="form-label">Product</label>
+              <input type="text" class="form-control" value="{{ cart.product.productname }}" readonly>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">Price</label>
+              <input type="text" class="form-control" value="{{ cart.product.price }}" readonly>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">Quantity</label>
+              <input type="number" name="quantity" value="{{cart.quantity}}" min="1" class="form-control">
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Update</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <!-- end modal -->
+
+  <!-- Modal unique DElete to THIS cart -->
+  <div class="modal fade" id="deletecart_{{ cart.id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 class="modal-title">Delete this item</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form action="/shoppingcart/delete/{{cart.id}}/" method="POST">
+          {% csrf_token %}
+          <div class="modal-body">
+            <input type="hidden" name="product_id" value="{{ cart.product.id }}">
+            <input type="hidden" name="shop_id" value="{{ cart.product.shop.id }}">
+
+            <div class="mb-2">
+              <label class="form-label">Product</label>
+              <input type="text" class="form-control" value="{{ cart.product.productname }}" readonly>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">Price</label>
+              <input type="text" class="form-control" value="{{ cart.product.price }}" readonly>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">Quantity</label>
+              <input type="number" name="quantity" value="{{cart.quantity}}" min="1" class="form-control">
+            </div>
+             <span>Are you sure to delete this item from your cart?</span>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <!-- end modal -->
+
+    {% endfor %}
+    <tr>
+      <td></td>
+      <td></td>
+      <td>Total</td>
+      <td>{{cart_total}}</td>
+      <td><a href="/orders/send/">Purchase all</a></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+{% else %}
+<p>your cart is empty</p>
+{% endif %}
 
 {% endblock %}

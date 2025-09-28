@@ -1,0 +1,71 @@
+/* Respect reduced-motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-title,
+    .hero-title::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* Container to center + breathing space (optional) */
+  .hero-wrap {
+    display: grid;
+    place-items: center;
+    padding-block: 1.5rem;
+  }
+
+  /* Title animations */
+  .hero-title {
+    position: relative;
+    font-weight: 800;
+    letter-spacing: .02em;
+    /* Entry animation: fade + slide up */
+    opacity: 0;
+    transform: translateY(12px);
+    animation: hero-enter .7s ease-out forwards .05s;
+    /* Gradient text shimmer */
+    background: linear-gradient(90deg, #8a2be2, #e83e8c, #ffc107, #20c997, #8a2be2);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: hero-enter .7s ease-out forwards .05s, gradient-flow 8s linear infinite;
+    text-align: center;
+  }
+
+  /* Underline sweep */
+  .hero-title::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    height: 3px;
+    width: 0;
+    transform: translateX(-50%);
+    background: currentColor;
+    background: linear-gradient(90deg, rgba(138,43,226,.9), rgba(232,62,140,.9), rgba(255,193,7,.9));
+    border-radius: 999px;
+    animation: underline-sweep .9s .5s ease-out forwards;
+  }
+
+  /* Subtle hover emphasis (optional) */
+  .hero-title:hover {
+    letter-spacing: .04em;
+    filter: drop-shadow(0 6px 16px rgba(232,62,140,.15));
+    transition: letter-spacing .25s ease, filter .25s ease;
+  }
+
+  /* Keyframes */
+  @keyframes hero-enter {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes gradient-flow {
+    0%   { background-position: 0% 50%;   }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%;   }
+  }
+  @keyframes underline-sweep {
+    0%   { width: 0;    opacity: 0; }
+    40%  { width: 40%;  opacity: .7; }
+    100% { width: 70%;  opacity: 1; }
+  }

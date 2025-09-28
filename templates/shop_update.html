@@ -1,0 +1,102 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+{% block title %}
+Shoplist
+{% endblock %}
+
+{% block body %}
+
+
+<section class="h-100 h-custom" style="background-color: #8fc4b7;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-8 col-xl-6">
+        <div class="card rounded-3">
+          <img src="{% static 'img/shopowenerregist.jpg' %}" class="w-100"
+            style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;" alt="Sample photo">
+          <div class="card-body p-4 p-md-5">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Registration Shop-owner Info</h3>
+
+            <form method="POST" class="px-md-2" action="/shops/update/{{shop.id}}/" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input type="text" name="shopname" id="form3Example1q" value="{{shop.shopname}}" class="form-control" />
+                <label class="form-label" for="form3Example1q">Your Shop Name</label>
+              </div>
+
+             
+              <div class="mb-4 text-center">
+                <label for="shop_image" class="d-inline-block">
+                   <img src="{{shop.shop_image.url}}" alt="shop_image" width="90px">
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor"
+                    class="bi bi-image text-secondary" viewBox="0 0 16 16" style="cursor: pointer;">
+                    <path d="M14.002 3H2c-.55 0-1 .45-1 
+               1v8c0 .55.45 1 1 1h12.002c.55 
+               0 1-.45 1-1V4c0-.55-.45-1-1-1zM2 
+               2h12.002C14.55 2 15 2.45 15 
+               3v10c0 .55-.45 1-1 1H2c-.55 
+               0-1-.45-1-1V3c0-.55.45-1 1-1z" />
+                    <path d="M10.648 8.646a.5.5 0 0 1 
+               .704.063l2.148 2.57c.447.535.074 
+               1.348-.632 1.348H3.132a.75.75 0 
+               0 1-.592-1.215l2.647-3.529a.5.5 
+               0 0 1 .74-.067l1.85 1.746 
+               2.87-3.6a.5.5 0 0 1 
+               .744.684l-3.11 3.998z" />
+                  </svg> -->
+                </label>
+                <input type="file" name="shop_image" id="shop_image" class="d-none" accept="image/*">
+                <div class="form-text">Click image to change shop image</div>
+              </div>
+
+
+
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input type="text" name="owner" value="{{ user}}" readonly id="form3Owner" class="form-control" />
+                <label class="form-label" for="form3Owner">Shop-owner's Name</label>
+              </div>
+              
+              <div class="mb-4 text-center">
+                <label for="photo" class="d-inline-block">
+                  <img src="{{shop.photo.url}}" alt="owner pic" width="100px">
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor"
+                    class="bi bi-person-circle text-secondary" viewBox="0 0 16 16" style="cursor: pointer;">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 
+               3 0 0 1 6 0" />
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 
+               0A8 8 0 0 1 0 8m8-7a7 7 
+               0 0 0-5.468 11.37C3.242 
+               11.226 5.26 10 8 10s4.757 
+               1.225 5.468 2.37A7 7 0 0 0 
+               8 1" />
+                  </svg> -->
+                </label>
+                <input type="file" name="photo" id="photo" class="d-none" accept="image/*">
+                <div class="form-text">Click photo to upload new photo</div>
+              </div>
+
+
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input type="phone" name="phone" id="form3Phone" class="form-control" value="{{shop.phone}}" />
+                <label class="form-label" for="form3Phone">Phone</label>
+              </div>
+
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input type="text" name="address" id="form3Address" value="{{shop.address}}" class="form-control" />
+                <label class="form-label" for="form3Address">Address</label>
+              </div>
+
+              <button type="submit" data-mdb-ripple-init class="btn btn-success btn-lg mb-1">Submit</button>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

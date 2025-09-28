@@ -1,43 +1,209 @@
-
 {% extends 'components/base.html' %}
 {% load static %}
 
-{% block title %}
-Shoplist
-
-
-{% endblock %}
+{% block title %}Shoplist{% endblock %}
 
 {% block body %}
-   {% if not user.is_staff %}
-    <div class="flex" style="margin-left: 1000px;">
-    <p class="mt-4 text-secondary" ><span class="text-success">Do you wanna sell your products?</span><a href="/shops/create/" class="btn btn-info text-primary" style="margin-left: 6px;" >Register</a></p> 
-        </div>
-        {% endif %}
-{% for shop in shops %}
-<div class="card mt-4 img-thumbnail" style="width: 18rem;">
-    {% if shop.shop_image %}
-    <div class="container" style="width: 100%; height: 9rem; overflow: hidden;">
-        <img src="{{shop.shop_image.url}}" class="rounded-3 col-sm-6 mx-auto" style="width: 100%;height: 100%; object-fit: cover;">
-    </div>
-    {% endif %}
-    <div class="card-body">
-        <h5 class="card-title">{{shop.shopname}}</h5>
-        <p class="card-text">{{shop.address}}</p>
-    </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">{{shop.phone}}</li>
-        <li class="list-group-item">{{shop.email}}</li>
-        <li class="list-group-item">{{shop.owner}}
-        {% if shop.photo %}
-            <img  class="rounded-circle mx-auto" src="{{shop.photo.url}}" style="width: 20%;">
-        {% endif %}
-        </li>
-    </ul>
-    <div class="card-body">
-        <a href="/products/list/" class="card-link">Buy from this shop!</a>
-    </div>
+
+<style>
+/* --- Register CTA --- */
+.btn-cta {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  transform: translateZ(0); /* enable GPU compositing */
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,.08), 0 2px 8px rgba(0,0,0,.05);
+}
+.btn-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.06);
+}
+.btn-cta:focus-visible { outline: 2px solid #86b7fe; outline-offset: 2px; }
+
+/* soft breathing glow */
+.btn-cta.glow {
+  animation: breathe 2.4s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { box-shadow: 0 8px 22px rgba(252,100,28,.24), 0 0 0 0 rgba(252,100,28,.0); }
+  50%      { box-shadow: 0 10px 28px rgba(252,100,28,.34), 0 0 0 6px rgba(252,100,28,.08); }
+}
+
+/* click ripple */
+.btn-cta .ripple {
+  position:absolute; border-radius:50%; transform:scale(0); animation:rip .6s ease-out; background:rgba(255,255,255,.55);
+  pointer-events:none; width:8px; height:8px; /* will be sized inline */
+}
+@keyframes rip { to { transform:scale(24); opacity:0; } }
+
+/* --- Card enter animations --- */
+.card-appear {
+  opacity: 0; transform: translateY(14px) scale(.98);
+  transition: opacity .5s ease, transform .6s cubic-bezier(.2,.8,.2,1);
+  will-change: opacity, transform;
+}
+.card-appear.in-view { opacity: 1; transform: translateY(0) scale(1); }
+
+/* image subtle shimmer on hover */
+.card .object-fit-cover { transition: transform .6s ease; }
+.card:hover .object-fit-cover { transform: scale(1.03); }
+</style>
+
+<img src="{% static 'img/shops.png' %}" alt="shops" class="w-15 mt-0 ms-1" >
+{% if not request.user.is_staff %}
+<div class="d-flex justify-content-end">
+  
+  <p class="mt-n5 text-secondary">
+    <span class="text-success">Do you wanna sell your products?</span>
+    <a href="/shops/create/" class="btn btn-info text-primary ms-2 btn-cta glow" id="registerShopBtn">Register</a>
+  </p>
+</div>
+{% endif %}
+<hr class="border-4">
+
+<div class="hero-wrap">
+  <h1 class="hero-title mt-3">Shop List</h1>
 </div>
 
-{% endfor %}
+<!-- FLEX ROW + WRAP -->
+<div class="d-flex flex-row flex-wrap gap-3 mt-3">
+  {% for shop in shops %}
+  <div class="card img-thumbnail" style="width: 18rem;">
+
+    {% if shop.shop_image %}
+    <div class="ratio ratio-16x9">
+      <img
+        src="{{ shop.shop_image.url }}"
+        alt="{{ shop.shopname }}"
+        class="w-100 h-100 rounded-top object-fit-cover">
+    </div>
+    {% endif %}
+
+    <div class="card-body">
+      <h5 class="card-title mb-1">{{ shop.shopname }}</h5>
+      <p class="card-text text-muted mb-2">{{ shop.address }}</p>
+    </div>
+
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Phone: {{ shop.phone }}</li>
+      <li class="list-group-item">Email: {{ shop.email }}</li>
+      <li class="list-group-item d-flex align-items-center">
+        <span class="me-2">{{ shop.owner }}</span>
+        {% if shop.photo %}
+          <img src="{{ shop.photo.url }}" class="rounded-circle ms-auto" style="width: 36px; height: 36px; object-fit: cover;">
+        {% endif %}
+      </li>
+    </ul>
+
+    {% if shop.owner == request.user %}
+    <div class="card-body d-flex gap-3">
+      <a href="/shops/update/{{ shop.id }}" class="card-link">Update</a>
+      <button
+        type="button"
+        class="btn btn-link text-danger p-0"
+        data-bs-toggle="modal"
+        data-bs-target="#shopdelete_{{ shop.id }}">
+        Delete
+      </button>
+    </div>
+    {% endif %}
+
+    <div class="card-body">
+      <!-- If you filter products by shop, consider: /products/list/?shop={{ shop.id }} -->
+      <a href="/shops/available/{{shop.id}}/" class="card-link">Buy from this shop!</a>
+    </div>
+  </div>
+
+  <!-- Delete Modal (unique per shop) -->
+  <div class="modal fade" id="shopdelete_{{ shop.id }}" aria-labelledby="shopdeleteLabel_{{ shop.id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="shopdeleteLabel_{{ shop.id }}">Are you sure you want to close your business?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <form method="POST" action="/shops/delete/{{ shop.id }}/">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- pagination -->
+{% if shops.has_other_pages %}
+<div class="d-flex justify-content-center">
+  <nav aria-label="Topics pagination" class="mb-4 mt-3">
+    <ul class="pagination">
+      {% if shops.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ shops.previous_page_number }}">Previous</a></li>
+      {% else %}
+      <li class="page-item disabled"><span class="page-link">Previous</span></li>
+      {% endif %}
+
+      {% for page_num in shops.paginator.page_range %}
+        {% if shops.number == page_num %}
+        <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if shops.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ shops.next_page_number }}">Next</a></li>
+      {% else %}
+      <li class="page-item disabled"><span class="page-link">Next</span></li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+{% endif %}
+
+<script>
+/* Ripple on click for Register button */
+(function () {
+  const btn = document.getElementById('registerShopBtn');
+  if (!btn) return;
+  btn.addEventListener('click', function(e){
+    const rect = this.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+    ripple.style.top  = (e.clientY - rect.top  - size/2) + 'px';
+    this.appendChild(ripple);
+    setTimeout(()=>ripple.remove(), 600);
+  });
+})();
+
+/* IntersectionObserver to reveal cards smoothly */
+(function () {
+  const items = document.querySelectorAll('.card-appear');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in-view'));
+    return;
+  }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: .12, rootMargin: '0px 0px -4% 0px' });
+  items.forEach(el=>io.observe(el));
+})();
+</script>
+
+
 {% endblock %}

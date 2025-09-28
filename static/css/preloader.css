@@ -1,0 +1,6 @@
+.preloader{
+    position:fixed; inset:0; z-index:2000;
+    background:#0f0f10; color:#fff;
+    transition: opacity .4s ease;
+  }
+  .preloader.is-hiding{ opacity:0; pointer-events:none; }

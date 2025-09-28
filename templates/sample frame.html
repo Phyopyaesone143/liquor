@@ -9,3 +9,138 @@ Shoplist
 
 
 {% endblock %}
+
+ hour = {now|date:'h'}
+
+
+    {% if hour >= 0 and hour
+    < 12 %} <img src="{% static 'img/morning.png' %}" alt="GM" height="25" class="rounded-circle"
+      style="margin-bottom: 1.5rem;" />
+    <h6 style="font-family: cursive;">Good Morning</h6>
+    {% elseif hour >= 12 and hour
+    < 17 %} <img src="{% static 'img/afternoon.png' %}" alt="GA" height="45" class="rounded-circle" />
+    {% elseif hour >= 17 and hour
+    < 20 %} <img src="{% static 'img/sunset.png' %}" alt="GE" height="35" class="rounded-circle"
+      style="margin-bottom: 1rem;" />
+    <h6 style="font-family: cursive;">Good Evening</h6>
+    {% elseif hour>=20 %}
+    <img src="{% static 'img/moon.png' %}" alt="GN" height="25" class="rounded-circle" style="margin-bottom: 1.5rem;" />
+    <h6 style="font-family: cursive;">Good night</h6>
+    {% endif %}
+
+
+
+
+    #cart views
+
+    @login_required(login_url="/login/")
+def ShopCartCreate(request):
+    if request.method != 'POST':
+        return redirect('/products/list/')
+
+    product_id = request.POST.get("product_id")
+    qty = int(request.POST.get('quantity', 1))
+    if qty <= 0:
+        messages.error(request, "Quantity must be at least 1.")
+        return redirect('/products/list/')
+
+    product = get_object_or_404(ProductModel, id=product_id)
+
+    # Decide the shop: prefer product's own shop (safer)
+    if hasattr(product, "shop") and product.shop_id:
+        shop = product.shop
+    else:
+        # fallback: explicit POST or user's shop if your business logic needs it
+        shop_id = request.POST.get('shop_id')
+        shop = get_object_or_404(ShopModel, id=shop_id) if shop_id else getattr(request.user, "shop", None)
+
+    if not shop:
+        messages.error(request, "Cannot determine the shop for this product.")
+        return redirect('/products/list/')
+
+    # Enforce single-shop cart: if cart already has items from a different shop, block.
+    existing_shop_ids = set(
+        OrderModel.objects.filter(user=request.user, status=False)
+        .values_list('shop_id', flat=True).distinct()
+    )
+    # Allow if cart empty or same shop; block otherwise
+    if existing_shop_ids and (shop.id not in existing_shop_ids):
+        messages.error(request, "Your cart already has items from another shop. Please checkout or clear it first.")
+        return redirect('/products/list/')
+
+    # Also guard against mismatched product.shop vs chosen shop
+    if hasattr(product, "shop_id") and product.shop_id and product.shop_id != shop.id:
+        messages.error(request, "This product belongs to another shop and can't be mixed.")
+        return redirect('/products/list/')
+
+    with transaction.atomic():
+        line, created = OrderModel.objects.get_or_create(
+            user=request.user,
+            product=product,
+            shop=shop,
+            status=False,                               # keep cart rows separate from orders
+            defaults={"quantity": 0, "total": Decimal("0.00")},
+        )
+        line.quantity = F("quantity") + qty
+        line.save(update_fields=["quantity"])
+        line.refresh_from_db(fields=["quantity"])       # resolve F() to int
+        line.total = (product.price or Decimal("0.00")) * line.quantity
+        line.save(update_fields=["total"])
+
+    messages.success(request, "Added to cart.")
+    return redirect("/products/list/")
+
+
+    < ------ first cart views ----->
+
+    def ShopCartCreate(request):
+    if request.method != 'POST':
+        return redirect('/products/list/')
+
+    product_id = request.POST.get("product_id")
+    qty = int(request.POST.get('quantity', 1))
+    product = get_object_or_404(ProductModel, id=product_id)
+
+    # Decide the shop: prefer explicit POST → product.shop → user's shop
+    shop_id = request.POST.get('shop_id')
+    if shop_id:
+        shop = get_object_or_404(ShopModel, id=shop_id)
+    elif hasattr(product, "shop") and product.shop_id:
+        shop = product.shop
+    else:
+        shop = request.user.shop  # adjust if your model differs
+
+    # One row per (user, product, shop) in CART
+    line, created = OrderModel.objects.get_or_create(
+        user=request.user,
+        product=product,
+        shop=shop,                       # keep status so orders don’t merge into cart
+        defaults={"quantity": 0, "total": Decimal("0.00")},
+    )
+
+    # Increase quantity (atomic) and recompute total
+    line.quantity = int("quantity") + qty
+    line.save(update_fields=["quantity"])
+    line.refresh_from_db(fields=["quantity"])   # resolve F() to actual value
+    line.total = product.price * line.quantity  # Decimal * int -> Decimal
+    line.save(update_fields=["total"])
+
+    return redirect("/products/list/")
+
+
+    @login_required(login_url="/login/")
+def OrderList(request):
+    orders_receive = (OrderModel.objects
+                      .filter(shopkeeper=request.user)
+                      .select_related("cart", "cart__product", "customer")
+                      .order_by("-created_at"))
+
+    orders_send = (OrderModel.objects
+                   .filter(customer=request.user)
+                   .select_related("cart", "cart__product", "shopkeeper")
+                   .order_by("-created_at"))
+
+    return render(request, "orders_list.html", {
+        "orders_receive": orders_receive,
+        "orders_send": orders_send,
+    })
