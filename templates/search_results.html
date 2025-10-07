@@ -50,14 +50,14 @@
 </style>
 
 <img src="{% static 'img/liquors.png' %}" alt="shops" class="w-15 mt-0 ms-1" >
-{% if user.is_staff %}
+<!-- {% if user.is_staff %}
 <div class="d-flex justify-content-end">
   <p class="mt-n5 text-secondary">
     <span class="text-success">Do you wanna sell your products?</span>
     <a href="/products/create/" class="btn btn-info text-primary ms-2 btn-cta glow" id="registerProductBtn">Add your product</a>
   </p>
 </div>
-{% endif %}
+{% endif %} -->
 <hr class="border-4">
 
 <!-- FLEX ROW + WRAP -->
@@ -229,6 +229,11 @@
   </div>
 
   {% endfor %}
+
+  {% if not shops and not products %}
+    <span class="fs-5 ms-5 text-danger">your word doesn't exist!</span>
+  {% endif %}
+
 </div>
 
 <!-- pagination -->

@@ -245,7 +245,7 @@ def ShopAvailable(request,pk):
     return render(request, 'shop_available.html', context)
 
 def ProductList(request):
-    products = ProductModel.objects.all().order_by('-created_at')
+    products = ProductModel.objects.all().order_by('productname')
     paginator = Paginator(products, 4) 
     page_number = request.GET.get('page') 
     page_obj = paginator.get_page(page_number) 

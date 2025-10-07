@@ -36,7 +36,7 @@ urlpatterns = [
 
     path('about/', views.About),
     path('termsofservice/',views.TermsOfService),
-    path('privacyandpolicy/',views.PrivacyAndPolicy),
+    path('privacy_and_policy/',views.PrivacyAndPolicy),
     
     path('shops/list/',views.ShopList),
     path('shops/create/',views.ShopCreate),
