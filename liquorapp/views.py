@@ -46,6 +46,7 @@ def SearchBy(request):
                 Q(productname__icontains=search)
             ).order_by('created_at')
 
+
         context = {
             "shops": shops,
             "products": products,
