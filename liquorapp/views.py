@@ -321,7 +321,8 @@ def ShopCartCreate(request):
     shop = get_object_or_404(ShopModel, id=shop_id)
     if shop.owner == request.user or product.shop.owner == request.user:
         messages.error(request, "You cannot buy from your own shop.")
-        return redirect("/products/list/")
+        # return redirect("/products/list/")
+        return redirect(request.META.get('HTTP_REFERER', '/'))
     
 # 🔒 Enforce one-shop-only cart (consider only status=False = active cart)
     existing_shop_ids = list(
@@ -336,12 +337,14 @@ def ShopCartCreate(request):
             "Your cart already has items from another shop. "
             "Please checkout or clear your cart before buying from a different shop."
         )
-        return redirect("/products/list/")
+        # return redirect("/products/list/")
+        return redirect(request.META.get('HTTP_REFERER', '/'))
 
     # (Optional but safe) Ensure product really belongs to this shop
     if getattr(product, "shop_id", None) and product.shop_id != shop.id:
         messages.error(request, "This product belongs to a different shop.")
-        return redirect("/products/list/")
+        # return redirect("/products/list/")
+        return redirect(request.META.get('HTTP_REFERER', '/'))
 
     total = product.price  * qty
     
@@ -358,7 +361,8 @@ def ShopCartCreate(request):
         CartModel.objects.filter(pk=line.pk).update(total=product.price * F("quantity"))
         line.refresh_from_db(fields=["total"])
     messages.success(request, "Added to cart.")
-    return redirect("/products/list/")
+    # return redirect("/products/list/")
+    return redirect(request.META.get('HTTP_REFERER', '/'))
 
 def ShopCartUpdate(request,pk):
     cart = CartModel.objects.get(id=pk)

@@ -57,7 +57,7 @@ Shoplist
       <td>
         <form method="POST" action="/orders/{{o.id}}/sell/">
           {% csrf_token %}
-          <button type="submit" class="btn btn-secondary">Sell</button>
+          <button type="submit" class="btn btn-info">Sell</button>
         </form>
 
       </td>
@@ -96,6 +96,7 @@ Shoplist
           <button type="submit" class="btn btn-success mx-auto" disabled>Confirmed</button>
        
       </td>
+    
     </tr>
     {% endif %}
     {% endfor %}
@@ -107,7 +108,7 @@ Shoplist
       <td class="text-end fw-semibold">
 
       </td>
-      <td></td>
+      <td></td><td></td>
     </tr>
   </tbody>
 

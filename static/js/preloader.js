@@ -1,5 +1,5 @@
 (function () {
-  const DURATION_MS = 1500; // hard cap: 1.5s
+  const DURATION_MS = 2500; // hard cap: 2.5s
   const preloader = document.getElementById('preloader');
   if (!preloader) return; // safety
 
